@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QuickNotes - Fast & Easy Note Taking</title>
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header class="app-header">
+    <div class="header-container">
+      <div class="logo-wrapper">
+        <span class="logo-icon" aria-hidden="true">📝</span>
+        <h1>QuickNotes</h1>
+      </div>
+      <p class="tagline">Capture your thoughts, ideas, and tasks instantly</p>
+    </div>
+  </header>
+
+  <main class="main-container">
+    <!-- Section 1: Add a note -->
+    <section class="card-section" aria-labelledby="add-note-heading">
+      <h2 id="add-note-heading" class="section-title">Add a note</h2>
+      <form id="note-form" novalidate>
+        <div class="form-group input-group">
+          <label for="note-input">Note Text</label>
+          <input 
+            type="text" 
+            id="note-input" 
+            name="noteText" 
+            placeholder="What's on your mind? (max 200 characters)" 
+            autocomplete="off"
+            maxlength="250"
+          >
+        </div>
+
+        <div class="form-group select-group">
+          <label for="note-category">Category</label>
+          <select id="note-category" name="noteCategory">
+            <option value="Personal">Personal</option>
+            <option value="Work">Work</option>
+            <option value="Study">Study</option>
+          </select>
+        </div>
+
+        <button type="submit" id="add-note-btn" class="btn btn-primary">
+          <span class="btn-icon" aria-hidden="true">+</span> Add Note
+        </button>
+      </form>
+      <p id="error-message" class="error-message" role="alert" aria-live="polite"></p>
+    </section>
+
+    <!-- Section 2: Your notes -->
+    <section class="card-section" aria-labelledby="your-notes-heading">
+      <div class="section-header-row">
+        <h2 id="your-notes-heading" class="section-title">Your notes</h2>
+        <button type="button" id="clear-all-btn" class="btn btn-secondary" title="Delete all notes">Clear All</button>
+      </div>
+
+      <div class="search-container">
+        <label for="search-input" class="visually-hidden">Search notes</label>
+        <div class="search-input-wrapper">
+          <span class="search-icon" aria-hidden="true">🔍</span>
+          <input 
+            type="search" 
+            id="search-input" 
+            placeholder="Search notes by keyword..." 
+            autocomplete="off"
+          >
+        </div>
+      </div>
+
+      <div class="notes-meta">
+        <p id="note-count" class="note-count" aria-live="polite">You have no notes yet.</p>
+      </div>
+
+      <ul id="notes-list" class="notes-list" aria-label="Notes list"></ul>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    <p>&copy; 2026 QuickNotes. Built with Web Foundations.</p>
+  </footer>
+</body>
+</html>
