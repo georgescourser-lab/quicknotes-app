@@ -4,6 +4,8 @@ const noteForm = document.querySelector('#note-form');
 const noteInput = document.querySelector('#note-input');
 const noteCategory = document.querySelector('#note-category');
 const notesList = document.querySelector('#notes-list');
+const errorMessage = document.querySelector('#error-message');
+const noteCount = document.querySelector('#note-count');
 
 // In-memory array of note objects
 let notes = [];
@@ -22,6 +24,29 @@ function getFormattedDateTime() {
     hour: '2-digit',
     minute: '2-digit',
   });
+}
+
+/**
+ * Update the note count message based on current notes
+ */
+function updateCount() {
+  const count = notes.length;
+  if (count === 0) {
+    noteCount.textContent = 'You have no notes yet.';
+  } else if (count === 1) {
+    noteCount.textContent = 'You have 1 note.';
+  } else {
+    noteCount.textContent = `You have ${count} notes.`;
+  }
+}
+
+/**
+ * Delete a note by its unique ID
+ * @param {string} id - The ID of the note to remove
+ */
+function deleteNote(id) {
+  notes = notes.filter((note) => note.id !== id);
+  render();
 }
 
 /**
@@ -66,6 +91,10 @@ function render() {
     deleteBtn.type = 'button';
     deleteBtn.className = 'btn-delete';
     deleteBtn.textContent = 'Delete';
+    deleteBtn.setAttribute('aria-label', `Delete note: ${note.text.slice(0, 20)}`);
+    deleteBtn.addEventListener('click', () => {
+      deleteNote(note.id);
+    });
 
     // Assemble footer and card
     footer.appendChild(details);
@@ -76,15 +105,35 @@ function render() {
 
     notesList.appendChild(li);
   });
+
+  // Update note count
+  updateCount();
 }
 
 /**
- * Handle form submission to add a note
+ * Handle form submission to add a note with validation
  */
 function handleAddNote(event) {
   event.preventDefault();
 
   const text = noteInput.value.trim();
+
+  // Validation
+  if (text === '') {
+    errorMessage.textContent = 'Please type a note first.';
+    noteInput.focus();
+    return;
+  }
+
+  if (text.length > 200) {
+    errorMessage.textContent = 'Notes must be 200 characters or fewer.';
+    noteInput.focus();
+    return;
+  }
+
+  // Clear validation error on valid submission
+  errorMessage.textContent = '';
+
   const category = noteCategory.value;
 
   const newNote = {
@@ -97,8 +146,16 @@ function handleAddNote(event) {
   notes.unshift(newNote);
   render();
 
+  // Reset input field
   noteInput.value = '';
 }
+
+// Clear error message when user starts typing
+noteInput.addEventListener('input', () => {
+  if (errorMessage.textContent) {
+    errorMessage.textContent = '';
+  }
+});
 
 // Event Listeners
 noteForm.addEventListener('submit', handleAddNote);
